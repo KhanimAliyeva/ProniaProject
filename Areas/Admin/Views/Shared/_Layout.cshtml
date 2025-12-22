@@ -1,0 +1,193 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Admin Panel</title>
+
+    <!-- PLUGINS CSS -->
+    <link rel="stylesheet" href="~/admin/assets/vendors/mdi/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="~/admin/assets/vendors/css/vendor.bundle.base.css" />
+
+    <!-- PAGE PLUGIN CSS -->
+    <link rel="stylesheet" href="~/admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css" />
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="~/admin/assets/css/style.css" />
+
+    <link rel="shortcut icon" href="~/admin/assets/images/favicon.ico" />
+</head>
+
+<body>
+    <div class="container-scroller">
+
+        <!-- TOP BANNER -->
+        @* <div class="row p-0 m-0 proBanner" id="proBanner">
+            <div class="col-md-12 p-0 m-0">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <p class="mb-0">Free Admin Dashboard Template</p>
+                    <button id="bannerClose" class="btn p-0">
+                        <i class="mdi mdi-close"></i>
+                    </button>
+                </div>
+            </div>
+        </div> *@
+
+        <!-- NAVBAR -->
+        <nav class="navbar fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex align-items-center">
+                <a class="navbar-brand" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                    <img src="~/admin/assets/images/logo.svg" alt="logo" />
+                </a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img src="~/admin/assets/images/faces/face5.jpg" />
+                            <span class="nav-profile-name">Admin</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item">Settings</a>
+                            <a class="dropdown-item">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- PAGE BODY -->
+        <div class="container-fluid page-body-wrapper">
+
+            <!-- partial:partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="mdi mdi-home menu-icon"></i>
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                            <i class="mdi mdi-circle-outline menu-icon"></i>
+                            <span class="menu-title">UI Elements</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="ui-basic">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false"
+                           aria-controls="form-elements">
+                            <i class="mdi mdi-view-headline menu-icon"></i>
+                            <span class="menu-title">Form elements</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="form-elements">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic Elements</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+                            <i class="mdi mdi-chart-pie menu-icon"></i>
+                            <span class="menu-title">Charts</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="charts">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ChartJs</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
+                            <i class="mdi mdi-grid-large menu-icon"></i>
+                            <span class="menu-title">Tables</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="tables">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Basic table</a></li>
+                    </li>
+                </ul>
+        </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
+                <i class="mdi mdi-emoticon menu-icon"></i>
+                <span class="menu-title">Icons</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="icons">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="pages/icons/font-awesome.html">Font Awesome</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <i class="mdi mdi-account menu-icon"></i>
+                <span class="menu-title">User Pages</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../../../docs/documentation.html">
+                <i class="mdi mdi-file-document-box menu-icon"></i>
+                <span class="menu-title">Documentation</span>
+            </a>
+        </li>
+        </ul>
+        </nav>
+
+            <!-- MAIN PANEL -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    @RenderBody()
+                </div>
+
+                <!-- FOOTER -->
+                <footer class="footer">
+                    <div class="text-center">
+                        © 2025 Admin Panel
+                    </div>
+                </footer>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JS FILES -->
+    <script src="~/admin/assets/vendors/js/vendor.bundle.base.js"></script>
+
+    <script src="~/admin/assets/vendors/chart.js/chart.umd.js"></script>
+    <script src="~/admin/assets/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+
+    <script src="~/admin/assets/js/off-canvas.js"></script>
+    <script src="~/admin/assets/js/hoverable-collapse.js"></script>
+    <script src="~/admin/assets/js/template.js"></script>
+    <script src="~/admin/assets/js/settings.js"></script>
+    <script src="~/admin/assets/js/dashboard.js"></script>
+</body>
+</html>

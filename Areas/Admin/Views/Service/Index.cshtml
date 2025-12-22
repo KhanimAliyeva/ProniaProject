@@ -1,0 +1,41 @@
+﻿@model List<Service>
+<div class="container">
+    <div class="row">
+
+        <a class="btn btn-primary my-3" asp-area="Admin" asp-controller="service" asp-action="Create">Add New service</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Desciprtion</th>
+                    <th scope="col">Icon</th>
+                    <th scope="col">Actions</th>
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var service in Model)
+                {
+                    <tr>
+                        <th scope="row">@service.Id</th>
+                        <td>@service.Title</td>
+                        <td>@service.Description</td>
+                        <td><img src="~/assets/images/website-images/@service.IconUrl" alt="Alternate Text" width=30px; height=30px /></td>
+                        <td>
+
+                            <a class="btn btn-warning" href="#">Update</a>
+                            <a asp-action="Delete" asp-route-id="@service.Id" class="btn btn-danger">Delete</a>
+
+                        </td>
+                    </tr>
+
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
