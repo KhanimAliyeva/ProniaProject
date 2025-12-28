@@ -1,4 +1,5 @@
-﻿@model List<Product>
+﻿@using Pronia.ViewModels.ProductViewModels
+@model List<ProductGetVM>
 <div class="container">
     <div class="row">
         <h2>Products</h2>
@@ -11,6 +12,7 @@
                     <th scope="col">Desciprtion</th>
                     <th scope="col">Image</th>
                     <th scope="col">Price</th>
+                    <th scope="col">Rating</th>
                     <th scope="col">Category Name</th>
                     <th scope="col">Actions</th>
 
@@ -27,7 +29,9 @@
                         <td>@product.Description</td>
                         <td><img src="~/assets/images/website-images/@product.MainImageUrl" alt="Alternate Text" width=30px; height=30px /></td>
                         <td>@product.Price</td>
-                        <td>@product.Category.Name</td>
+                        <td>@product.Rating</td>
+
+                        <td>@product.CategoryName</td>
                         <td>
 
                             <a class="btn btn-warning" asp-action="Update" asp-route-id="@product.Id">Update</a>
@@ -43,36 +47,3 @@
 
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-
-        const deleteButtons = document.querySelectorAll('.deleteBtn');
-
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function (event) {
-                event.preventDefault();
-
-                const url = this.getAttribute('href');
-
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = url;
-                    }
-                });
-            });
-        });
-
-    });
-</script>
-

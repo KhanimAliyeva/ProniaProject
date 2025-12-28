@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 
 namespace Pronia.Models;
@@ -11,8 +13,11 @@ public class Product : BaseEntity
     public string SKU { get; set; }
     public int CategoryId { get; set; }
     public Category? Category { get; set; }
-    public string MainImageUrl { get; set; }
+    public string? MainImageUrl { get; set; }
     public string? HoverImageUrl { get; set; }
+    [Range(1, 5)]
+    public int Rating { get; set; }
+
 
 }
 

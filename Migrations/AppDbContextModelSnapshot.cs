@@ -57,7 +57,6 @@ namespace Pronia.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MainImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -66,6 +65,9 @@ namespace Pronia.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
 
                     b.Property<string>("SKU")
                         .IsRequired()
@@ -123,7 +125,6 @@ namespace Pronia.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 

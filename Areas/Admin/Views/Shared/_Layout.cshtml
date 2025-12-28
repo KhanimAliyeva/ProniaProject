@@ -122,6 +122,41 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const deleteButtons = document.querySelectorAll('.deleteBtn');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    const url = this.getAttribute('href');
+
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete it!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = url;
+                        }
+                    });
+                });
+            });
+
+        });
+    </script>
+
+
+
     <!-- JS FILES -->
     <script src="~/admin/assets/vendors/js/vendor.bundle.base.js"></script>
 

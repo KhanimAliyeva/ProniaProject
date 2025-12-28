@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pronia.Models;
 
@@ -17,7 +18,11 @@ public class Slider: BaseEntity
     [Range(0, 100)]
     public int DiscountPercentage { get; set; }
 
-    [Required]
+    
     [MaxLength(512)]
-    public string ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
+
+    [NotMapped]
+    public IFormFile ImageFile { get; set; }
+
 }
