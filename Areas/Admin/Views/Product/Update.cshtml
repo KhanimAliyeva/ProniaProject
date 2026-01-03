@@ -9,8 +9,7 @@
           asp-controller="Product"
           asp-action="Update"
           method="post"
-          enctype="multipart/form-data"
-    >
+          enctype="multipart/form-data">
         <div class="text-danger" asp-validation-summary="All"></div>
 
         <div class="form-group mb-3">
@@ -32,10 +31,54 @@
 
         <div class="form-group mb-3">
             <label asp-for="MainImageFile" class="form-label">MainImage</label>
+            <br />
+            <img src="~/assets/images/website-images/@Model.MainImageUrl" style="width:50px; height:50px; border-radius:12px; object-fit:cover; margin-bottom:8px;" />
+            <input type="hidden" asp-for="MainImageUrl" />
             <input asp-for="MainImageFile"
                    class="form-control"
                    placeholder="https://example.com/image.jpg" />
             <span asp-validation-for="MainImageFile" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-4">
+            <label asp-for="HoverImageFile" class="form-label"> HoverImage </label>
+            <br />
+            <img src="~/assets/images/website-images/@Model.HoverImageUrl" style="width:50px; height:50px; border-radius:12px; object-fit:cover; margin-bottom:8px;" />
+            <input type="hidden" asp-for="HoverImageUrl" />
+
+            <input asp-for="HoverImageFile"
+                   class="form-control"
+                   placeholder="Enter HoverImage " />
+            <span asp-validation-for="HoverImageFile" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="ProductImageFiles" class="form-label"> Product Images </label>
+            <br />
+            <div>
+                @for (int i = 0; i < Model.ProductImageUrls.Count; i++)
+                {
+                    string imageUrl = Model.ProductImageUrls[i];
+                    <div style="position:relative; display:inline-block; margin-right:10px; margin-bottom:10px;">
+
+                        <span style="position:absolute; top:-6px; right:-6px; background-color:red; color:white; border-radius:50%; width:20px; height:20px; text-align:center; line-height:20px; font-size:12px; cursor:pointer; font-weight:bold;"
+                              class="removeBtn">
+                            X
+                        </span>
+
+                        <img src="~/assets/images/website-images/@imageUrl"
+                             style="width:50px; height:50px; border-radius:12px; object-fit:cover;" />
+
+                        <input type="hidden" asp-for="ProductImageUrls" value="@imageUrl" />
+                        <input type="hidden" asp-for="ProductImageIds" value="@Model.ProductImageIds[i]" />
+                    </div>
+                }
+
+            </div>
+
+            <input asp-for="ProductImageFiles"
+                   class="form-control"
+                   placeholder="Enter ProductImageFiles " />
+            <span asp-validation-for="ProductImageFiles" class="text-danger"></span>
         </div>
 
         <div class="form-group mb-4">
@@ -44,31 +87,50 @@
                    type="number"
                    class="form-control"
                    min="0"
-                   max="100"
+                   
                    placeholder="Enter Price " />
             <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-4">
+            <label asp-for="Rating" class="form-label"> Rating</label>
+            <input asp-for="Rating"
+                   type="number"
+                   class="form-control"
+                   min="0"
+                   max="5"
+                   placeholder="Enter Rating " />
+            <span asp-validation-for="Rating" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="TagIds" class="form-label ">
+                Tags
+            </label>
+
+            <select asp-for="TagIds" class="form-select ">
+
+                @foreach (Tag tags in ViewBag.Tags)
+                {
+                    <option value="@tags.Id">
+                        @tags.Name
+                    </option>
+                }
+            </select>
+
+            <span asp-validation-for="CategoryId" class="text-danger small"></span>
         </div>
 
         <div class="form-group mb-4">
             <label asp-for="SKU" class="form-label"> SKU</label>
             <input asp-for="SKU"
-                   type="number"
+                   type="text"
                    class="form-control"
-                   min="0"
-                   max="100"
                    placeholder="Enter SKU " />
             <span asp-validation-for="SKU" class="text-danger"></span>
         </div>
-        <div class="form-group mb-4">
-            <label asp-for="HoverImageFile" class="form-label"> HoverImage</label>
-            <input asp-for="HoverImageFile"
-                   type="number"
-                   class="form-control"
-                   min="0"
-                   max="100"
-                   placeholder="https://example.com/image.jpg" />
-            <span asp-validation-for="HoverImageFile" class="text-danger"></span>
-        </div>
+
+
+
 
         <div class="form-group mb-4">
             <label asp-for="CategoryId" class="form-label ">
@@ -89,6 +151,25 @@
             <span asp-validation-for="CategoryId" class="text-danger small"></span>
         </div>
 
+        <div class="form-group mb-4">
+            <label asp-for="BrandId" class="form-label ">
+                Brand
+            </label>
+
+            <select asp-for="BrandId" class="form-select ">
+                <option value="" selected disabled>Choose a brand</option>
+
+                @foreach (Brand brand in ViewBag.Brands)
+                {
+                    <option value="@brand.Id">
+                        @brand.Name
+                    </option>
+                }
+            </select>
+
+            <span asp-validation-for="BrandId" class="text-danger small"></span>
+        </div>
+
 
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-success">Update</button>
@@ -103,3 +184,13 @@
     </form>
 
 </div>
+
+<script>
+ const removeButtons = document.querySelectorAll('.removeBtn');
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const parentDiv = this.parentElement;
+                parentDiv.remove();
+            });
+           });
+</script>

@@ -1,49 +1,105 @@
 ﻿@using Pronia.ViewModels.ProductViewModels
 @model List<ProductGetVM>
+
+<style>
+    .desc-col {
+        max-width: 300px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 6px;
+        flex-wrap: nowrap;
+    }
+
+    .action-buttons a {
+        white-space: nowrap;
+    }
+
+    .product-img {
+        width: 35px;
+        height: 35px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+</style>
+
 <div class="container">
     <div class="row">
         <h2>Products</h2>
-        <a class="btn btn-primary my-3" asp-area="Admin" asp-controller="product" asp-action="Create">Add New product</a>
-        <table class="table table-striped">
+
+        <a class="btn btn-primary my-3"
+           asp-area="Admin"
+           asp-controller="Product"
+           asp-action="Create">
+            Add New Product
+        </a>
+
+        <table class="table table-striped align-middle">
             <thead>
                 <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Desciprtion</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Rating</th>
-                    <th scope="col">Category Name</th>
-                    <th scope="col">Actions</th>
-
-
-
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Rating</th>
+                    <th>Category</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
+
             <tbody>
                 @foreach (var product in Model)
                 {
                     <tr>
-                        <th scope="row">@product.Id</th>
+                        <td>@product.Id</td>
+
                         <td>@product.Name</td>
-                        <td>@product.Description</td>
-                        <td><img src="~/assets/images/website-images/@product.MainImageUrl" alt="Alternate Text" width=30px; height=30px /></td>
+
+                        <td class="desc-col" title="@product.Description">
+                            @product.Description
+                        </td>
+
+                        <td>
+                            <img src="~/assets/images/website-images/@product.MainImageUrl"
+                                 class="product-img"
+                                 alt="Product Image" />
+                        </td>
+
                         <td>@product.Price</td>
+
                         <td>@product.Rating</td>
 
                         <td>@product.CategoryName</td>
+
                         <td>
+                            <div class="action-buttons">
+                                <a class="btn btn-sm btn-primary"
+                                   asp-action="Detail"
+                                   asp-route-id="@product.Id">
+                                    Detail
+                                </a>
 
-                            <a class="btn btn-warning" asp-action="Update" asp-route-id="@product.Id">Update</a>
-                            <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger deleteBtn">Delete</a>
+                                <a class="btn btn-sm btn-warning"
+                                   asp-action="Update"
+                                   asp-route-id="@product.Id">
+                                    Update
+                                </a>
 
+                                <a class="btn btn-sm btn-danger deleteBtn"
+                                   asp-action="Delete"
+                                   asp-route-id="@product.Id">
+                                    Delete
+                                </a>
+                            </div>
                         </td>
                     </tr>
-
                 }
-
             </tbody>
         </table>
-
     </div>
 </div>

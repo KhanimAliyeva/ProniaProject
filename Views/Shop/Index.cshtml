@@ -227,7 +227,7 @@
                                 <div class="col-md-4 col-sm-6">
                                     <div class="product-item">
                                         <div class="product-img">
-                                            <a href="single-product-variable.html">
+                                            <a asp-action="Index" asp-controller="Detail">
                                                 <img class="primary-img"
                                                      src="~/assets/images/website-images/@product.MainImageUrl"
                                                      alt="Product Images" />
@@ -276,8 +276,7 @@
                                             </div>
                                         </div>
                                         <div class="product-content">
-                                            <a class="product-name"
-                                               href="single-product-variable.html">@product.Name</a>
+                                            <a class="product-name"  asp-action="Index" asp-route-id="@product.Id" asp-controller="Detail">@product.Name</a>
                                             <div class="price-box pb-1">
                                                 <span class="new-price">$@product.Price</span>
                                             </div>

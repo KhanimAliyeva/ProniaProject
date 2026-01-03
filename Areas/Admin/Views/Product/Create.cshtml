@@ -45,6 +45,13 @@
                    placeholder="Enter HoverImage " />
             <span asp-validation-for="HoverImageFile" class="text-danger"></span>
         </div>
+        <div class="form-group mb-4">
+        <label>Additional Images</label>
+        <input asp-for="ProductImageFiles"
+               type="file"
+               multiple
+               class="form-control" />
+        </div>
 
         <div class="form-group mb-4">
             <label asp-for="Price" class="form-label"> Price</label>
@@ -85,6 +92,43 @@
 
             <span asp-validation-for="CategoryId" class="text-danger small"></span>
         </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="BrandId" class="form-label ">
+                Brand
+            </label>
+
+            <select asp-for="BrandId" class="form-select ">
+                <option value="" selected disabled>Choose a brand</option>
+
+                @foreach (Brand brand in ViewBag.Brands)
+                {
+                    <option value="@brand.Id">
+                        @brand.Name
+                    </option>
+                }
+            </select>
+
+            <span asp-validation-for="BrandId" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="TagIds" class="form-label ">
+                Tag
+            </label>
+
+            <select asp-for="TagIds" class="form-select ">
+                @foreach (Tag tag in ViewBag.Tags)
+                {
+                    <option value="@tag.Id">
+                        @tag.Name
+                    </option>
+                }
+            </select>
+
+            <span asp-validation-for="TagIds" class="text-danger small"></span>
+        </div>
+
         <div class="form-group">
             <label for="exampleInputStar1">Rating (1–5)</label>
             <input asp-for="Rating"
