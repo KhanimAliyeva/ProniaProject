@@ -22,7 +22,5 @@ public class Slider: BaseEntity
     [MaxLength(512)]
     public string? ImageUrl { get; set; }
 
-    [NotMapped]
-    public IFormFile ImageFile { get; set; }
-
+    
 }

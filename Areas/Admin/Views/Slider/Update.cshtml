@@ -1,9 +1,13 @@
-﻿@model Slider
+﻿@using Pronia.ViewModels.Slider
+@model SliderUpdateVM
 
 <form asp-area="Admin"
       asp-controller="Slider"
       asp-action="Update"
-      method="post">
+      method="post"
+      enctype="multipart/form-data"
+
+>
 
     <div class="form-group mb-3">
         <label asp-for="Title" class="form-label">Title</label>
@@ -23,12 +27,13 @@
     </div>
 
     <div class="form-group mb-3">
-        <label asp-for="ImageUrl" class="form-label">Image URL</label>
-        <input asp-for="ImageUrl"
+        <label asp-for="ImageFile" class="form-label">Image </label>
+        <input asp-for="ImageFile"
                class="form-control"
                placeholder="https://example.com/image.jpg" />
-        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
     </div>
+
 
     <div class="form-group mb-4">
         <label asp-for="DiscountPercentage" class="form-label">Discount Percentage</label>

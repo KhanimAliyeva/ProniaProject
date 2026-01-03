@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pronia.Context;
+using Pronia.Helpers;
 using Pronia.Models;
+using Pronia.ViewModels.ProductViewModels;
+using Pronia.ViewModels.Slider;
 
 namespace Pronia.Areas.Admin.Controllers;
 
@@ -19,8 +22,15 @@ public class SliderController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        var sliders = _context.Sliders.ToList();
-        return View(sliders);
+        List<SliderGetVM> slider = _context.Sliders.Select(s => new SliderGetVM
+        {
+            Id = s.Id,
+            Title = s.Title,
+            Description = s.Description,
+            DiscountPercentage = s.DiscountPercentage,
+            ImageUrl = s.ImageUrl
+        }).ToList();
+        return View(slider);
     }
 
     [HttpGet]
@@ -30,59 +40,105 @@ public class SliderController : Controller
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Create(Slider slider)
+    public IActionResult Create(SliderCreateVM vm)
     {
+        if (vm == null)
+        {
+            return NotFound();
+
+        }
+
         if (!ModelState.IsValid)
-            return View(slider);
-
-        if (slider.ImageFile == null)
         {
-            ModelState.AddModelError("ImageFile", "Image is required");
-            return View(slider);
+            return View(vm);
         }
 
-        if (!slider.ImageFile.ContentType.StartsWith("image/"))
+        if (vm.ImageFile == null || !vm.ImageFile.CheckType("image/"))
         {
-            ModelState.AddModelError("ImageFile", "Only image files are allowed");
-            return View(slider);
+            ModelState.AddModelError("ImageFile", "Image is required and must be an image file");
+            return View(vm);
+        }
+        if (!vm.ImageFile.CheckSize(2))
+        {
+            ModelState.AddModelError("ImageFile", "Image size must be less than 2MB");
+            return View(vm);
         }
 
-        if (slider.ImageFile.Length > 2 * 1024 * 1024)
+
+        string folderPath = Path.Combine(_environment.WebRootPath, "assets", "images", "website-images");
+        string imageFileName = vm.ImageFile.SaveFile(folderPath);
+        Slider slider = new Slider
         {
-            ModelState.AddModelError("ImageFile", "Image size must be max 2MB");
-            return View(slider);
-        }
-
-        if (slider.DiscountPercentage < 0 || slider.DiscountPercentage > 100)
-        {
-            ModelState.AddModelError("DiscountPercentage", "Discount must be between 0 and 100");
-            return View(slider);
-        }
-
-        string folderPath = Path.Combine(
-            _environment.WebRootPath,
-            "assets",
-            "images",
-            "website-images"
-        );
-
-        if (!Directory.Exists(folderPath))
-            Directory.CreateDirectory(folderPath);
-
-        string fileName = Guid.NewGuid() + "_" + slider.ImageFile.FileName;
-        string filePath = Path.Combine(folderPath, fileName);
-
-        using (FileStream fs = new FileStream(filePath, FileMode.Create))
-        {
-            slider.ImageFile.CopyTo(fs);
-        }
-
-        slider.ImageUrl = $"assets/images/website-images/{fileName}";
-
+            Title = vm.Title,
+            Description = vm.Description,
+            DiscountPercentage = vm.DiscountPercentage,
+            ImageUrl = imageFileName
+        };
         _context.Sliders.Add(slider);
         _context.SaveChanges();
+        return RedirectToAction(nameof(Index));
 
+    }
+
+    [HttpGet]
+    public IActionResult Update(int? id)
+    {
+        Slider? slider = _context.Sliders.Find(id);
+        if (slider == null)
+        {
+            return NotFound();
+        }
+        SliderUpdateVM vm = new SliderUpdateVM
+        {
+            Title = slider.Title,
+            Description = slider.Description,
+            DiscountPercentage = slider.DiscountPercentage,
+            ExistingImageUrl = slider.ImageUrl
+        };
+        return View(vm);
+
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Update(int id, SliderUpdateVM vm)
+    {
+        Slider? slider = _context.Sliders.Find(id);
+        if (slider == null)
+            return NotFound();
+
+        if (!ModelState.IsValid)
+            return View(vm);
+
+        if (vm.ImageFile != null)
+        {
+            if (!vm.ImageFile.CheckType("image/"))
+            {
+                ModelState.AddModelError("ImageFile", "Only image files are allowed");
+                return View(vm);
+            }
+
+            if (!vm.ImageFile.CheckSize(2))
+            {
+                ModelState.AddModelError("ImageFile", "Image size must be less than 2MB");
+                return View(vm);
+            }
+
+            string folderPath = Path.Combine( _environment.WebRootPath,"assets","images","website-images");
+
+            string oldImagePath = Path.Combine(folderPath, slider.ImageUrl);
+            if (System.IO.File.Exists(oldImagePath))
+                System.IO.File.Delete(oldImagePath);
+
+            string newImageName = vm.ImageFile.SaveFile(folderPath);
+            slider.ImageUrl = newImageName;
+        }
+
+        slider.Title = vm.Title;
+        slider.Description = vm.Description;
+        slider.DiscountPercentage = vm.DiscountPercentage;
+
+        _context.SaveChanges();
         return RedirectToAction(nameof(Index));
     }
 
@@ -90,87 +146,23 @@ public class SliderController : Controller
     {
         var slider = _context.Sliders.Find(id);
         if (slider == null)
+        {
             return NotFound();
-
-        string fullPath = Path.Combine(_environment.WebRootPath, slider.ImageUrl);
-
-        if (System.IO.File.Exists(fullPath))
-            System.IO.File.Delete(fullPath);
+        }
+        string folderPath = Path.Combine(_environment.WebRootPath, "assets", "images", "website-images");
+        if (!string.IsNullOrEmpty(slider.ImageUrl))
+        {
+            string mainPath = Path.Combine(folderPath, slider.ImageUrl);
+            if (System.IO.File.Exists(mainPath))
+                System.IO.File.Delete(mainPath);
+        }
 
         _context.Sliders.Remove(slider);
         _context.SaveChanges();
-
         return RedirectToAction(nameof(Index));
     }
 
-    [HttpGet]
-    public IActionResult Update(int id)
-    {
-        var slider = _context.Sliders.Find(id);
-        if (slider == null)
-            return NotFound();
 
-        return View(slider);
-    }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Update(Slider slider)
-    {
-        if (!ModelState.IsValid)
-            return View(slider);
 
-        var existingSlider = _context.Sliders.Find(slider.Id);
-        if (existingSlider == null)
-            return NotFound();
-
-        if (slider.DiscountPercentage < 0 || slider.DiscountPercentage > 100)
-        {
-            ModelState.AddModelError("DiscountPercentage", "Discount must be between 0 and 100");
-            return View(slider);
-        }
-
-        existingSlider.Title = slider.Title;
-        existingSlider.Description = slider.Description;
-        existingSlider.DiscountPercentage = slider.DiscountPercentage;
-
-        if (slider.ImageFile != null)
-        {
-            if (!slider.ImageFile.ContentType.StartsWith("image/"))
-            {
-                ModelState.AddModelError("ImageFile", "Only image files are allowed");
-                return View(slider);
-            }
-
-            if (slider.ImageFile.Length > 2 * 1024 * 1024)
-            {
-                ModelState.AddModelError("ImageFile", "Image size must be max 2MB");
-                return View(slider);
-            }
-
-            string oldPath = Path.Combine(_environment.WebRootPath, existingSlider.ImageUrl);
-            if (System.IO.File.Exists(oldPath))
-                System.IO.File.Delete(oldPath);
-
-            string folderPath = Path.Combine(
-                _environment.WebRootPath,
-                "assets",
-                "images",
-                "website-images"
-            );
-
-            string newFileName = Guid.NewGuid() + "_" + slider.ImageFile.FileName;
-            string newFilePath = Path.Combine(folderPath, newFileName);
-
-            using (FileStream fs = new FileStream(newFilePath, FileMode.Create))
-            {
-                slider.ImageFile.CopyTo(fs);
-            }
-
-            existingSlider.ImageUrl = $"assets/images/website-images/{newFileName}";
-        }
-
-        _context.SaveChanges();
-        return RedirectToAction(nameof(Index));
-    }
 }
