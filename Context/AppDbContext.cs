@@ -1,8 +1,11 @@
 ﻿
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
+
 namespace Pronia.Context
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext:IdentityDbContext<AppUser>
     {
 
         public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
