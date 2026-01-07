@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Pronia.Context;
+using Pronia.Views.Account;
 using System.Threading.Tasks;
 
 namespace Pronia.Controllers
 {
-    public class AccountController(UserManager<AppUser> _userManager, SignInManager<AppUser> _signInManager ): Controller
+    public class AccountController(UserManager<AppUser> _userManager, SignInManager<AppUser> _signInManager, RoleManager<IdentityRole> _roleManager,  IConfiguration _configuration) : Controller
     {
         public IActionResult Register()
         {
@@ -51,7 +52,8 @@ namespace Pronia.Controllers
                 return View(vm);
             }
 
-            return Ok("ok");
+            await _signInManager.SignInAsync(appUser, false);
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Login()
@@ -89,6 +91,53 @@ namespace Pronia.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-        
+
+
+        public async Task<IActionResult> CreateRoles()
+        {
+            await _roleManager.CreateAsync(new IdentityRole("Admin"));
+            await _roleManager.CreateAsync(new IdentityRole("Member"));
+            await _roleManager.CreateAsync(new IdentityRole("Moderator"));
+
+            return Ok("Roles Created");
+        }
+
+        public async Task<IActionResult> CreateAdminAndModerator()
+        {
+            var AdminUserVM=_configuration.GetSection("AdminUser").Get<UserVM>();
+            var ModeratorUserVM = _configuration.GetSection("ModeratorUser").Get<UserVM>();
+
+            if(AdminUserVM is not null)
+            {
+            AppUser adminUser = new()
+            {
+                FirstName = AdminUserVM.FirstName,
+                LastName = AdminUserVM.LastName,
+                UserName = AdminUserVM.UserName,
+                Email = AdminUserVM.Email
+            };
+            await _userManager.CreateAsync(adminUser, AdminUserVM.Password);
+            await _userManager.AddToRoleAsync(adminUser, "Admin");
+
+
+            }
+            if(ModeratorUserVM is not null)
+            {
+
+            AppUser moderatorUser = new()
+            {
+                FirstName = ModeratorUserVM.FirstName,
+                LastName = ModeratorUserVM.LastName,
+                UserName = ModeratorUserVM.UserName,
+                Email = ModeratorUserVM.Email
+            };
+
+            await _userManager.CreateAsync(moderatorUser,ModeratorUserVM.Password);
+            await _userManager.AddToRoleAsync(moderatorUser, "Moderator");
+            }
+
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

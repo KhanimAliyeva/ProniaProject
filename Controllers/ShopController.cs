@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Pronia.Context;
 using Pronia.ViewModels.ProductViewModels;
 
 namespace Pronia.Controllers
 {
+    [Authorize]
     public class ShopController : Controller
     {
         AppDbContext context;

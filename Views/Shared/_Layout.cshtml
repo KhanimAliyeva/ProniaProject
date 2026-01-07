@@ -128,12 +128,35 @@
                                             </button>
                                             <ul class="dropdown-menu"
                                                 aria-labelledby="settingButton">
-                                                <li>
-                                                    <a class="dropdown-item" href="my-account.html">My account</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="login-register.html">Login | Register</a>
-                                                </li>
+                                                @if(User.Identity.IsAuthenticated)
+                                                {
+                                                    if(User.IsInRole("Admin"))
+                                                    {
+                                                        <li>
+                                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Admin Dashboard</a>
+                                                        </li>
+                                                    }
+
+                                                    <li>
+                                                        <a class="dropdown-item" asp-controller="Account" asp-action="Profile">@User.Identity.Name</a>
+                                                    </li>
+                                                    <li>
+                                                        <form method="post" asp-controller="Account" asp-action="Logout" class="dropdown-item p-0 m-0">
+                                                            <button type="submit" class="btn btn-link p-0 m-0">Logout</button>
+                                                        </form>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <a class="dropdown-item" asp-controller="Account" asp-action="Login">Login</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" asp-controller="Account" asp-action="Register">Register</a>
+                                                    </li>
+                                                }
+
+                                               
                                             </ul>
                                         </li>
                                         <li class="d-none d-lg-block">

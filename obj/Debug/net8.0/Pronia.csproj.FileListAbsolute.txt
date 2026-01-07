@@ -256,3 +256,4 @@ D:\visual studio 2025\Pronia\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.
 D:\visual studio 2025\Pronia\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 D:\visual studio 2025\Pronia\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
 D:\visual studio 2025\Pronia\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+D:\visual studio 2025\Pronia\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
