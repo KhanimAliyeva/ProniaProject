@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Pronia.Abstraction;
 using Pronia.Context;
+using Pronia.Services;
 
 namespace Pronia
 {
@@ -10,6 +12,7 @@ namespace Pronia
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddDbContext<Context.AppDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
