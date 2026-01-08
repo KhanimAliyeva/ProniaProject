@@ -5,7 +5,6 @@ using Pronia.ViewModels.ProductViewModels;
 
 namespace Pronia.Controllers
 {
-    [Authorize]
     public class ShopController : Controller
     {
         AppDbContext context;
@@ -29,6 +28,7 @@ namespace Pronia.Controllers
                     HoverImageUrl = p.HoverImageUrl
                 })
                 .ToList();
+            TempData["ErrorMessage"] ="You must be logged in to access the shop.";
             return View(products);
         }
     }

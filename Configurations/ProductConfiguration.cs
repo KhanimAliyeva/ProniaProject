@@ -27,6 +27,26 @@ namespace Pronia.Configurations
             builder.Property(p => p.MainImageUrl).HasMaxLength(255);
             builder.Property(p => p.HoverImageUrl).HasMaxLength(255);
 
+            builder.HasOne(p => p.Category)
+                   .WithMany(c => c.Products)
+                   .HasForeignKey(p => p.CategoryId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(p => p.Brand)
+                .WithMany(b => b.Products)
+                     .HasForeignKey(p => p.BrandId)
+                     .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(p => p.ProductTags)
+                   .WithOne(pt => pt.Product)
+                   .HasForeignKey(pt => pt.ProductId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(p => p.ProductImages)
+                     .WithOne(pi => pi.Product)
+                     .HasForeignKey(pi => pi.ProductId)
+                     .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

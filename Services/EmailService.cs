@@ -34,11 +34,7 @@ public class EmailService : IEmailService
 
         client.ServerCertificateValidationCallback = (x, y, z, i) => true;
 
-        await client.ConnectAsync(
-            _settings.Server,
-            _settings.Port,
-            SecureSocketOptions.StartTls
-        );
+        await client.ConnectAsync(_settings.Server, _settings.Port, SecureSocketOptions.SslOnConnect);
 
         await client.AuthenticateAsync(_settings.Username , _settings.Password);
         await client.SendAsync(message);
