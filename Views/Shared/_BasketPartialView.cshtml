@@ -1,0 +1,76 @@
+﻿@model List<Basket>
+@{
+    var totalPrice = Model.Sum(b => b.Product.Price * b.Count);
+}
+<div class="row">
+    <div class="col-12">
+        <div class="table-content table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Remove</th>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Basket"
+                                   asp-action="RemoveFromBasket"
+                                   asp-route-productId="@item.ProductId"
+                                   method="post">
+                                    <input type="hidden" name="id" value="@item.ProductId" />
+                                    <button type="submit" class="btn btn-link p-0">
+                                        <i class="pe-7s-close"></i>
+                                    </button>
+                                </a>
+                            </td>
+
+                            <td>
+                                <img src="~/assets/images/website-images/@item.Product.MainImageUrl"
+                                     width="80" />
+                            </td>
+
+                            <td>@item.Product.Name</td>
+
+                            <td class="unit-price" data-price="@item.Product.Price">
+                                $@item.Product.Price
+                            </td>
+
+                            <td class="quantity">
+                                <div class="cart-plus-minus">
+                                    <input class="cart-plus-minus-box"
+                                           value="@item.Count"
+                                           type="text" />
+                                    <div style="z-index:999" class="dec qtybutton decreaseBtn" data-productId="@item.ProductId">
+                                        <i class="fa fa-minus"></i>
+                                    </div>
+                                    <div style="z-index:999" class="inc qtybutton increaseBtn" data-productId="@item.ProductId">
+                                        <i class="fa fa-plus"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="row-total"
+                                      data-price="@item.Product.Price">
+                                    $@(item.Product.Price* item.Count)
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cart-page-total mt-4 text-end">
+            <h4>Total: <span id="cartTotal">$@totalPrice</span></h4>
+        </div>
+
+    </div>
+</div>

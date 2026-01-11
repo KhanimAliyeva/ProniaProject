@@ -33,6 +33,8 @@ public class Product : BaseEntity
 
     public ICollection<ProductImage> ProductImages { get; set; } = [];
 
+    public ICollection<Basket> Baskets { get; set; } = [];
+
 
 
 

@@ -13,6 +13,7 @@ namespace Pronia
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IBasketService, BasketService>();
             builder.Services.AddDbContext<Context.AppDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));

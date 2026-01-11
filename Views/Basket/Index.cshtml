@@ -1,0 +1,57 @@
+﻿@model List<Basket>
+
+
+<main class="main-content">
+  
+        <partial name="_TitlePartialView" model='"Shopping Cart"'></partial>
+    <div class="cart-area section-space-y-axis-100">
+        <div class="container basket-area">
+            <partial name="_BasketPartialView" model='@Model'></partial>
+        </div>
+    </div>
+</main>
+<script>
+    async function RenderBasket() {
+
+        const basketArea = document.querySelector('.basket-area');
+
+        document.querySelectorAll('.increaseBtn').forEach(button => {
+            button.onclick = async function (e) {
+                e.preventDefault();
+
+                const productId = this.dataset.productid;
+
+                const response = await fetch(`/Basket/IncreasebasketCount?productId=${productId}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    const html = await response.text();
+                    basketArea.innerHTML = html;
+                    RenderBasket(); 
+                }
+            };
+        });
+
+        document.querySelectorAll('.decreaseBtn').forEach(button => {
+            button.onclick = async function (e) {
+                e.preventDefault();
+
+                const productId = this.dataset.productid;
+
+                const response = await fetch(`/Basket/DecreaseBasketCount?productId=${productId}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    const html = await response.text();
+                    basketArea.innerHTML = html;
+                    RenderBasket();
+                }
+            };
+        });
+    }
+
+    RenderBasket();
+</script>
+
